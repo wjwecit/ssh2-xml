@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- theme -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- location-->
+	<constant name="struts.locale" value="zh_CN" />
+	<!-- charset-->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+
+	<!-- extension -->
+	<constant name="struts.action.extension" value="action,do,jsp" />
+
+	<!-- method invocation -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+
+	<!-- '/' is not allowed Action -->
+	<constant name="struts.enable.SlashesInActionNames" value="false" />
+
+	<!-- result resource -->
+	<constant name="struts.convention.result.path" value="/" />
+
+	<!-- action ends with 'action' seperate with ',' -->
+	<constant name="struts.convention.package.locators" value="action" />
+
+	<!-- action parents package seperate with ',' -->
+	<constant name="struts.convention.package.locators.basePackage" value="wei.ssh"/>
+
+	<constant name="struts.devMode" value="true" />
+
+	<!-- when struts.xml changed, reload application-->
+	<constant name="struts.configuration.xml.reload" value="true" />
+
+	<!-- brower cache, disable in dev mode  -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+
+	<!-- spring generate action  -->
+	<constant name="struts.objectFactory" value="spring" />
+	
+	
+	
+
+	<package name="condefault" namespace="/" extends="struts-default">
+		<action name="index">
+			<result>index.jsp</result>
+		</action>
+		<action name="s" class="testAction">
+			<result>success.jsp</result>
+		</action>
+	</package>
+
+	<package name="annodefault" namespace="/json" extends="json-default">
+		<interceptors>
+			<interceptor name="annotationInterceptor"
+				class="com.opensymphony.xwork2.interceptor.annotations.AnnotationWorkflowInterceptor" />
+			<interceptor-stack name="annotatedStack">
+				<interceptor-ref name="annotationInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-action-ref name="error" />
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+		<action name="s" class="testAction">
+			<result type="json">
+                <!-- Struts2 action property with getter method -->
+                <param name="areaChina">areaChina</param>
+            </result>
+		</action>
+		<action name="s2" class="testAction" method="exe2">
+			<result type="json">
+                <!-- Struts2 action property with getter method -->
+                <param name="areaChina">areaChina</param>
+            </result>
+		</action>
+	</package>
+
+	<!-- <include file="example.xml" /> -->
+
+	<!-- Add packages here -->
+
+</struts>

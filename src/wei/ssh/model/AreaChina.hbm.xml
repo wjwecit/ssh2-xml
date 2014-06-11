@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="wei.ssh.model">	
+	<class name="AreaChina" table="areachina">
+		<cache usage="nonstrict-read-write"/>
+		<id name="areaCode" column="areaCode">
+			<generator class="native"></generator>
+		</id>
+		<property name="areaName" column="areaName" type="string" />
+		<property name="areaCodeDeprecated" column="areaCodeDeprecated" type="string" />
+	</class>
+	
+	<sql-query name="qUserArea">
+		<return-scalar column="name" type="string"/>
+		<return-scalar column="phone" type="string"/>
+		<return-scalar column="areaCode" type="integer"/>
+		<return-scalar column="areaName" type="string"/>
+		<![CDATA[
+			select ta.name as name, ta.phone as phone,tb.areaCode as areaCode,tb.areaName as areaName
+			from userarea ta left join areachina tb on ta.areaCode=tb.areaCode
+			where ta.phone=:phone
+			order by ta.areaCode
+		]]>
+	</sql-query>
+</hibernate-mapping>
